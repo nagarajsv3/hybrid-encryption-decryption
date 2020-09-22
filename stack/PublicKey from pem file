@@ -1,0 +1,16 @@
+2020-09-21 20:31:21.383 ERROR 11524 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.security.cert.CertificateException: Unable to initialize, java.io.IOException: Short read of DER length] with root cause
+
+java.io.IOException: Short read of DER length
+	at sun.security.util.DerInputStream.getLength(DerInputStream.java:582) ~[na:1.8.0_162]
+	at sun.security.util.DerValue.<init>(DerValue.java:258) ~[na:1.8.0_162]
+	at sun.security.util.DerInputStream.getDerValue(DerInputStream.java:451) ~[na:1.8.0_162]
+	at sun.security.x509.X509CertImpl.parse(X509CertImpl.java:1784) ~[na:1.8.0_162]
+	at sun.security.x509.X509CertImpl.<init>(X509CertImpl.java:195) ~[na:1.8.0_162]
+	at sun.security.provider.X509Factory.engineGenerateCertificate(X509Factory.java:102) ~[na:1.8.0_162]
+	at java.security.cert.CertificateFactory.generateCertificate(CertificateFactory.java:339) ~[na:1.8.0_162]
+	at app.nsv.jsmbaba.hybridencryptiondecryption.util.hybrid.CertificateLoader.loadEncryptionCertificate(CertificateLoader.java:56) ~[classes/:na]
+	at app.nsv.jsmbaba.hybridencryptiondecryption.service.HybridEncryptorService.encrypt(HybridEncryptorService.java:22) ~[classes/:na]
+
+
+Solution :
+https://stackoverflow.com/questions/45303597/java-io-ioexception-short-read-of-der-length

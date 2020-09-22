@@ -1,0 +1,30 @@
+Trying to create PublicKey using CSR. Getting the following error
+2020-09-21 20:22:03.581 ERROR 16056 --- [nio-8080-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.security.cert.CertificateParsingException: java.io.IOException: ObjectIdentifier() -- data isn't an object ID (tag = 49)] with root cause
+
+Code Snippet :
+    public RSAPublicKey getRSAPublicKey() throws CertificateException, IOException {
+        String pemEncodedPublicKey = IOUtils.readFileToString(new File(decCertPath), Charset.forName("UTF-8"));
+        Base64 base64 = new Base64(
+                pemEncodedPublicKey.replaceAll(BEGIN_CERT, "").replaceAll(END_CERT, ""));
+        Certificate cf = CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(base64.decode()));
+        return (RSAPublicKey) cf.getPublicKey();
+    }
+
+
+java.io.IOException: ObjectIdentifier() -- data isn't an object ID (tag = 49)
+	at sun.security.util.ObjectIdentifier.<init>(ObjectIdentifier.java:257) ~[na:1.8.0_162]
+	at sun.security.util.DerInputStream.getOID(DerInputStream.java:314) ~[na:1.8.0_162]
+	at sun.security.x509.AlgorithmId.parse(AlgorithmId.java:356) ~[na:1.8.0_162]
+	at sun.security.x509.CertificateAlgorithmId.<init>(CertificateAlgorithmId.java:79) ~[na:1.8.0_162]
+	at sun.security.x509.X509CertInfo.parse(X509CertInfo.java:646) ~[na:1.8.0_162]
+	at sun.security.x509.X509CertInfo.<init>(X509CertInfo.java:167) ~[na:1.8.0_162]
+	at sun.security.x509.X509CertImpl.parse(X509CertImpl.java:1804) ~[na:1.8.0_162]
+	at sun.security.x509.X509CertImpl.<init>(X509CertImpl.java:195) ~[na:1.8.0_162]
+	at sun.security.provider.X509Factory.engineGenerateCertificate(X509Factory.java:102) ~[na:1.8.0_162]
+	at java.security.cert.CertificateFactory.generateCertificate(CertificateFactory.java:339) ~[na:1.8.0_162]
+	at app.nsv.jsmbaba.hybridencryptiondecryption.util.hybrid.CertificateLoader.loadEncryptionCertificate(CertificateLoader.java:56) ~[classes/:na]
+
+
+Solution :
+https://stackoverflow.com/questions/41512915/got-data-isnt-an-object-id-tag-49-while-generating-x509-cert

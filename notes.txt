@@ -1,0 +1,52 @@
+https://openid.net/developers/jwt/
+
+Examples :
+https://connect2id.com/products/nimbus-jose-jwt/examples
+
+JWE Example :
+https://connect2id.com/products/nimbus-jose-jwt/examples/jwe-with-preset-cek
+
+JWE Example :
+https://connect2id.com/products/nimbus-jose-jwt/examples/jws-with-rsa-signature
+
+openssl req -new -keyout privateKey.pem -out sample.csr -subj "/emailAddress=[...]/UID=a318b757-1020-4a1c-9cb4-4edd1ca0ca07/CN=Common/O=Test/OU=TestDept/C=IN/ST=Karnataka/L=Bengaluru"
+
+##In this example the Key-ID for which this CSR is being generated is a318b757-1020-4a1c-9cb4-4edd1ca0ca06. Modify all required fields as applicable.
+
+https://dzone.com/articles/using-nimbus-jose-jwt-in-spring-applications-why-a
+
+https://medium.facilelogin.com/jwt-jws-and-jwe-for-not-so-dummies-b63310d201a3
+https://openid.net/developers/jwt/
+https://connect2id.com/products/nimbus-jose-jwt/examples
+https://bitbucket.org/b_c/jose4j/wiki/Home
+
+Working with Java - Public Key
+https://blog.jonm.dev/posts/rsa-public-key-cryptography-in-java/
+
+Working with Java - Private Key
+https://stackoverflow.com/questions/7216969/getting-rsa-private-key-from-pem-base64-encoded-private-key-file/55339208#55339208
+
+Working with Certificates in Java
+https://blog.jonm.dev/posts/rsa-public-key-cryptography-in-java/
+https://pasztor.at/blog/working-with-certificates-in-java/
+
+
+To read
+https://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file
+https://stackoverflow.com/search?q=Load+RSA+Public+Key+in+Java
+https://stackoverflow.com/questions/3243018/how-to-load-rsa-private-key-from-file/7473874#7473874
+https://stackoverflow.com/questions/13555085/save-and-load-crypto-rsa-privatekey-to-and-from-the-disk
+https://stackoverflow.com/questions/24084206/java-generate-certificate-x509certificate-object-from-privatekey-object
+https://stackoverflow.com/questions/9815001/load-pem-encoded-private-rsa-key-in-crypto
+https://stackoverflow.com/questions/54957545/how-to-load-rsa-public-key-from-string-for-signature-verification-in-java
+https://stackoverflow.com/questions/21812713/load-rsa-key-in-android-java-generated-with-openssl
+https://stackoverflow.com/questions/29221947/unable-to-use-public-rsa-key-pem-file-created-with-bouncycastle-to-encrypt-fil
+https://stackoverflow.com/questions/43354852/convert-rsapublic-key-to-x509certificate-java
+https://stackoverflow.com/questions/36417723/how-can-i-export-a-pkcs8-private-key-in-putty-or-puttygen-readable-format
+https://stackoverflow.com/questions/7216969/getting-rsa-private-key-from-pem-base64-encoded-private-key-file/55339208#55339208
+https://stackoverflow.com/questions/7525679/how-to-get-the-java-security-privatekey-object-from-rsa-privatekey-pem-file/7529075#7529075
+https://blog.jonm.dev/posts/rsa-public-key-cryptography-in-java/
+https://pasztor.at/blog/working-with-certificates-in-java/
+https://rietta.com/blog/openssl-generating-rsa-key-from-command/
+https://help.singlecomm.com/hc/en-us/articles/115008214927-Generating-Public-Private-RSA-Keys
+
