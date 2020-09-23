@@ -1,5 +1,8 @@
 package app.nsv.jsmbaba.hybridencryptiondecryption.util.hybrid;
 
+import app.nsv.jsmbaba.hybridencryptiondecryption.domain.StudentInfo;
+import app.nsv.jsmbaba.hybridencryptiondecryption.util.JsonUtils;
+import app.nsv.jsmbaba.hybridencryptiondecryption.util.RSAUtils;
 import com.nimbusds.jose.EncryptionMethod;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWEAlgorithm;
@@ -27,6 +30,7 @@ import java.security.cert.CertificateFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateKeySpec;
+
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1Sequence;
 import com.nimbusds.jose.*;
@@ -61,11 +65,24 @@ public class HybridEncryptorMain {
         System.out.println("******Content Encryption (CEK) key Generated******");
 
 
-        String message = "Hi!!! Welcome to Hybrid Encryption" ;
+        StudentInfo studentInfo = new StudentInfo("Naga","Srinivasa","Leela");
+
+
+        String message = JsonUtils.convertObjectToString(studentInfo);
 
         String jweString = RSAOAEPEncryption.encrypt(message, alg, enc, rsaPublicKey, cek, null);
 
-        String decrypt = RSAOAEPDecryption.decrypt(jweString, rsaPrivateKey);
+        String jws = PS256SignVerify.signingProcess(rsaPrivateKey, jweString);
+
+        System.out.println("*********Chase Side ***********");
+        PS256SignVerify.signverification(rsaPublicKey, jws);
+
+        JWSObject jwsObject = JWSObject.parse(jws);
+        String s = jwsObject.getPayload().toString();
+        System.out.println("THought JWE="+s);
+
+
+        String decrypt = RSAOAEPDecryption.decrypt(s, rsaPrivateKey);
 
 
     }
@@ -83,7 +100,6 @@ public class HybridEncryptorMain {
                 .generateCertificate(new ByteArrayInputStream(base64.decode()));
         return (RSAPublicKey) cf.getPublicKey();
     }
-
 
 
 }

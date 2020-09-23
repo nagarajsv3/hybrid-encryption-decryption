@@ -1,5 +1,7 @@
 1. Message Level Encryption is based on JOSE standards
 2. Lets use bouncy castle for converting PEM file content to private key
+3. Keytool generates in java readable format
+4. Openssl generates certs in pem format
 
 **_Loading Private Keys_**
 PKCS#8 -> 

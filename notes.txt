@@ -49,4 +49,33 @@ https://blog.jonm.dev/posts/rsa-public-key-cryptography-in-java/
 https://pasztor.at/blog/working-with-certificates-in-java/
 https://rietta.com/blog/openssl-generating-rsa-key-from-command/
 https://help.singlecomm.com/hc/en-us/articles/115008214927-Generating-Public-Private-RSA-Keys
+https://github.com/txedo/bouncycastle-rsa-pem-read
+https://www.txedo.com/blog/java-read-rsa-keys-pem-file/
 
+
+openssl commands
+https://stackoverflow.com/questions/44474516/how-to-create-public-and-private-key-with-openssl
+You can generate a public-private keypair with the genrsa context (the last number is the keylength in bits):
+
+openssl genrsa -out keypair.pem 2048
+
+To extract the public part, use the rsa context:
+openssl rsa -in keypair.pem -pubout -out publickey.crt
+
+Finally, convert the original keypair to PKCS#8 format with the pkcs8 context:
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out pkcs8.key
+
+
+1. Generate Private Key
+openssl genrsa -out naga_private_key.pem 2048
+2. Generate Certificate usin Private Key
+openssl req -new -x509 -key naga_private_key.pem -out naga_cert.pem -days 365
+3. Convert the certificate to PKCS12 format. (Which is the keystore)
+openssl pkcs12 -export -in naga_cert.pem -inkey naga_private_key.pem -out naga_cert.p12
+4. Generating the CSR (Certificate Signing Request) when you need a valid CA assurance. You are required to send this CSR file to the selected CA and get a signed certificate.
+openssl req -new -key naga_private_key.pem -out naga_certificate_request.csr
+
+openssl req -new -keyout privateKey.pem -out sample.csr -subj "/emailAddress=[...]/UID=a318b757-1020-4a1c-9cb4-4edd1ca0ca06/CN=Common/O=Test/OU=TestDept/C=IN/ST=Karnataka/L=Bengaluru"
+
+openssl genrsa -out rsa.private 1024
+openssl rsa -in rsa.private -out rsa.public -pubout -outform PEM
