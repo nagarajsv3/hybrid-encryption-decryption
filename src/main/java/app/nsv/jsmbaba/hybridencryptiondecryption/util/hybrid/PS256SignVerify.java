@@ -19,7 +19,6 @@ public class PS256SignVerify {
 
     public static void main(String[] args) throws JOSEException, ParseException, NoSuchAlgorithmException {
 
-
         //Add Bouncy Castle a318b757-1020-4a1c-9cb4-4edd1ca0ca07 Security Provider
         Security.addProvider(new BouncyCastleProvider());
 
@@ -29,26 +28,30 @@ public class PS256SignVerify {
     }
 
 
-    public static String signingProcess(RSAPrivateKey rsaPrivateKey, String jwe) throws JOSEException {
+    public static String signingProcess(RSAPrivateKey rsaPrivateKey, String jwe, String kid) throws JOSEException {
 
         Security.addProvider(new BouncyCastleProvider());
 
         // Create RSA-signer with the private key
         JWSSigner signer = new RSASSASigner(rsaPrivateKey);
 
-// Prepare JWS object with simple string a318b757-1020-4a1c-9cb4-4edd1ca0ca07 payload
+        //JWSHeader
+        JWSHeader.Builder jwsHeaderBuilder = new JWSHeader.Builder(JWSAlgorithm.PS256);
+        jwsHeaderBuilder.keyID(kid);
+        jwsHeaderBuilder.type(JOSEObjectType.JOSE);
+        jwsHeaderBuilder.contentType("JWE");
+        JWSHeader jwsHeader = jwsHeaderBuilder.build();
+
+
+        // Prepare JWS object with simple string a318b757-1020-4a1c-9cb4-4edd1ca0ca07 payload
         JWSObject jwsObject = new JWSObject(
-                new JWSHeader.Builder(JWSAlgorithm.PS256).build(),
+                jwsHeader,
                 new Payload(jwe));
 
-// Compute the RSA signature
+        // Compute the RSA signature
         jwsObject.sign(signer);
 
-// To serialize to compact form, produces something like
-// eyJhbGciOiJSUzI1NiJ9.SW4gUlNBIHdlIHRydXN0IQ.IRMQENi4nJyp4er2L
-// mZq3ivwoAjqa1uUkSBKFIX7ATndFF5ivnt-m8uApHO4kfIFOrW7w2Ezmlg3Qd
-// maXlS9DhN0nUk_hGI3amEjkKd0BWYCB8vfUbUv0XGjQip78AI4z1PrFRNidm7
-// -jPDm5Iq0SZnjKjCNS5Q15fokXZc8u0A
+        // To serialize to compact form, produces something like
         String jws = jwsObject.serialize();
         System.out.println("JWS="+jws);
         return jws;

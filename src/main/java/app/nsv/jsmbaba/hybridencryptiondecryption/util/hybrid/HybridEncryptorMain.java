@@ -31,6 +31,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateKeySpec;
 
+import com.nimbusds.jose.util.Base64URL;
+import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1Sequence;
 import com.nimbusds.jose.*;
@@ -44,7 +46,7 @@ import static sun.security.provider.X509Factory.END_CERT;
 
 public class HybridEncryptorMain {
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, JOSEException, ParseException, CertificateException, IOException {
+    public static void main(String[] args) throws Exception {
 
         JWEAlgorithm alg = JWEAlgorithm.RSA_OAEP_256;
         EncryptionMethod enc = EncryptionMethod.A256GCM;
@@ -62,28 +64,30 @@ public class HybridEncryptorMain {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(enc.cekBitLength());
         SecretKey cek = keyGenerator.generateKey();
+        System.out.println("cek="+cek.toString()+" ;Encoded="+cek.getEncoded());
         System.out.println("******Content Encryption (CEK) key Generated******");
 
 
-        StudentInfo studentInfo = new StudentInfo("Naga","Srinivasa","Leela");
-
+        StudentInfo studentInfo = new StudentInfo("James Jr","James Sr","Cla");
 
         String message = JsonUtils.convertObjectToString(studentInfo);
 
-        String jweString = RSAOAEPEncryption.encrypt(message, alg, enc, rsaPublicKey, cek, null);
+        //Get JWE
+        String jwe = RSAOAEPEncryption.encrypt(message, alg, enc, rsaPublicKey, cek, null);
 
-        String jws = PS256SignVerify.signingProcess(rsaPrivateKey, jweString);
+        //Sign the JWE
+        String jws = PS256SignVerify.signingProcess(rsaPrivateKey, jwe,null);
 
         System.out.println("*********Chase Side ***********");
         PS256SignVerify.signverification(rsaPublicKey, jws);
 
         JWSObject jwsObject = JWSObject.parse(jws);
-        String s = jwsObject.getPayload().toString();
-        System.out.println("THought JWE="+s);
+        String jwePayload = jwsObject.getPayload().toString();
+        System.out.println("JWS Payload="+jwePayload);
 
+        String decrypt = RSAOAEPDecryption.decrypt(jwePayload, rsaPrivateKey);
 
-        String decrypt = RSAOAEPDecryption.decrypt(s, rsaPrivateKey);
-
+        System.out.println("Decrypted Message="+decrypt);
 
     }
 

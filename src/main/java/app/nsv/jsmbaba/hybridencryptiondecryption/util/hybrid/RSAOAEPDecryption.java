@@ -17,10 +17,9 @@ public class RSAOAEPDecryption {
         System.out.println(("Decrypted Payload"+jwe.getPayload().toString()));
         System.out.println(("Decrypted : JWE Header="+jwe.getHeader()));
         System.out.println(("Decrypted : JWE Encrypted Key="+jwe.getEncryptedKey()));
-        System.out.println(("Decrypted : JWE IV="+jwe.getIV()+"Base64 Decode="+ jwe.getIV().decode()));
+        System.out.println(("Decrypted : JWE IV="+jwe.getIV()+"Base64 Decode="+ jwe.getIV().decodeToString()));
         System.out.println(("Decrypted : JWE CipherText="+jwe.getCipherText()));
         System.out.println(("Decrypted : JWE AuthTag="+jwe.getAuthTag()));
-
 
         return jwe.getPayload().toString();
     }
